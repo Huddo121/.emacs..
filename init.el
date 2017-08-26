@@ -41,6 +41,10 @@
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 (setq highlight-indent-guides-method 'character)
 
+;; Powerline
+(use-package powerline)
+(powerline-default-theme)
+
 ;; Projectile
 (use-package projectile)
 (add-hook 'prog-mode-hook 'projectile-mode)
