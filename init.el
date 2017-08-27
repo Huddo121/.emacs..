@@ -96,7 +96,10 @@
 ;;
 
 (global-linum-mode t) ;; Line numbers, please
-(setq linum-format "%d \u2502 ")
+(setq linum-format "%4d \u2502 ")
+
+;; Pg Up, Pg dn, M-v, C-v, bigger overlap between screens
+(setq next-screen-context-lines 8)
 
 ;; Set company-mode to start after initialisation
 (add-hook 'after-init-hook 'global-company-mode)
@@ -133,8 +136,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
- '(package-selected-packages (quote (projectile use-package))))
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
+ '(package-selected-packages (quote (projectile use-package)))
+ '(psc-ide-rebuild-on-save t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
