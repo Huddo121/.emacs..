@@ -48,10 +48,17 @@
 ;; Projectile
 (use-package projectile)
 (add-hook 'prog-mode-hook 'projectile-mode)
+(use-package flx-ido) ;; Better fuzzy finder
 
 ;; Neotree
 (use-package neotree)
 (global-set-key [f8] 'neotree-toggle)
+
+;; Editorconfig
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
 
 ;; Solarized, dark, because I'm allergic to sunlight
 (use-package solarized-theme)
@@ -59,6 +66,25 @@
 ;; Install Programming Languages
 (use-package elixir-mode) ;; Elixir Packages
 (use-package alchemist)
+
+;; PureScript
+(use-package purescript-mode)
+(use-package psc-ide)
+(add-hook 'purescript-mode-hook
+  (lambda ()
+    (psc-ide-mode)
+    (company-mode)
+    (flycheck-mode)
+    (turn-on-purescript-indentation)
+    (psc-ide-server-start)))
+
+(customize-set-variable 'psc-ide-rebuild-on-save t)
+
+;; Pick up PureScript projects
+(projectile-register-project-type 'pulp '(".pulp-cache")
+                  :compile "pulp build"
+                  :test "pulp test"
+                  :run "pulp run")
 
 ;;
 ;; Modes
@@ -70,17 +96,16 @@
 ;;
 
 (global-linum-mode t) ;; Line numbers, please
+(setq linum-format "%d \u2502 ")
 
 ;; Set company-mode to start after initialisation
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; Save file on loss of focus
-;; TODO: Actually get this to work
-(defun save-all ()
-  (interactive)
-  (save-some-buffers t))
+(add-hook 'focus-out-hook (lambda () (save-some-buffers t)))
 
-(add-hook 'focus-out-hook 'save-all)
+;; I normally press right-alt + Enter (M-RET) for complete + import
+(global-set-key (kbd "M-RET") 'company-complete)
 
 ;; Switch open windows with C-c <Arrow>
 (global-set-key (kbd "C-c <left>")  'windmove-left)
@@ -98,8 +123,8 @@
             (setq beg (line-beginning-position) end (line-end-position)))
         (comment-or-uncomment-region beg end)))
 
+;; TODO: iTerm2 has Cmd + / bound to some sort of 'find-cursor' function
 (global-set-key (kbd "s-/") 'comment-or-uncomment-region-or-line)
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -109,7 +134,7 @@
  '(custom-safe-themes
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" default)))
- '(package-selected-packages (quote (use-package))))
+ '(package-selected-packages (quote (projectile use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -117,5 +142,5 @@
  ;; If there is more than one, they won't work right.
  )
 
-(load-theme 'solarized-dark)
+;; (load-theme 'solarized-dark)
 
